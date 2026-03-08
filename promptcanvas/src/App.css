@@ -69,8 +69,12 @@ textarea {
   resize: none;
 }
 
-textarea:hover {
+textarea:hover,
+textarea:focus {  
+  border: var(--border-default);
+  border-radius: 1px;
   border-color: var(--color-fg);
+  outline: none;
 }
 
 textarea::-webkit-scrollbar {
@@ -251,7 +255,7 @@ button {
 
 .jsonViewer,
 .jsonPlaceholder {
-  min-height: 1000px;
+  min-height: 0px;
   margin: 0;
   border-radius: 12px;
   border: none;
@@ -281,23 +285,24 @@ button {
 }
 
 .jsonKey {
-  color: #7fc8ff;
+  color: var(--color-border);
+  font-weight: 1000;
 }
 
 .jsonString {
-  color: #b8f4a9;
+  color: var(--color-fg);
 }
 
 .jsonNumber {
-  color: #ffd284;
+  color: var(--color-fg);
 }
 
 .jsonBoolean {
-  color: #f7a9ff;
+  color: var(--color-fg);
 }
 
 .jsonNull {
-  color: #ff9ca3;
+  color: var(--color-fg);
 }
 
 .dialogOverlay {

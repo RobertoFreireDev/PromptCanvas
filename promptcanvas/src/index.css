@@ -1,9 +1,9 @@
 :root {
   font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   line-height: 1.4;
-  --color-bg: #122236;
-  --color-fg: #b8f4a9;
-  --color-border: #c5d4c5;
+  --color-bg: #020b05;
+  --color-fg: #33ff66;
+  --color-border: #0f5a2a;
   --color-scrollbar-track: var(--color-bg);
   --color-scrollbar-thumb: var(--color-fg);
   --color-scrollbar-thumb-hover: var(--color-border);
