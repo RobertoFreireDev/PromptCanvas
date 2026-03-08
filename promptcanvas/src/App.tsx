@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import './App.css'
+import Button from './components/Button'
 import FormField from './components/FormField'
 import PromptOutput from './components/PromptOutput'
 import { createInitialValues, fields } from './constants/fields'
@@ -155,9 +156,9 @@ function App() {
       <section className="canvas">
         <div className="canvasHeader">
           <h1>PromptCanvas</h1>
-          <button type="button" className="secondaryBtn apiKeyBtn" onClick={openKeyDialog}>
+          <Button type="button" variant="secondary" className="apiKeyBtn" onClick={openKeyDialog}>
             Google API Key
-          </button>
+          </Button>
         </div>
         <p className="subtitle">Build a structured Gemini prompt using guided sections.</p>
 
@@ -175,9 +176,9 @@ function App() {
             />
           ))}
 
-          <button type="submit" className="submitBtn">
+          <Button type="submit">
             Assemble Prompt
-          </button>
+          </Button>
         </form>
       </section>
 
@@ -210,12 +211,12 @@ function App() {
                 placeholder="AIza..."
               />
               <div className="dialogActions">
-                <button type="submit" className="submitBtn">
+                <Button type="submit">
                   Save
-                </button>
-                <button type="button" className="secondaryBtn" onClick={closeKeyDialog}>
+                </Button>
+                <Button type="button" variant="secondary" onClick={closeKeyDialog}>
                   Close
-                </button>
+                </Button>
               </div>
               {keySavedNotice && <p className="savedNotice">{keySavedNotice}</p>}
             </form>

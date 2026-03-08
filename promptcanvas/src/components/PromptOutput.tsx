@@ -1,3 +1,5 @@
+import Button from './Button'
+
 type PromptOutputProps = {
   value: string
   responseValue: string
@@ -54,14 +56,13 @@ function PromptOutput({ value, responseValue, isLoadingResponse, onRequest }: Pr
         <div className="jsonPlaceholder">
         </div>
       )}
-      <button
+      <Button
         type="button"
-        className="submitBtn"
         onClick={onRequest}
         disabled={!value.trim() || isLoadingResponse}
       >
         {isLoadingResponse ? 'Requesting...' : 'Send Request'}
-      </button>
+      </Button>
       <h2>Gemini API response</h2>
       {isLoadingResponse ? (
         <pre className="jsonViewer" aria-label="Gemini API response loading">
