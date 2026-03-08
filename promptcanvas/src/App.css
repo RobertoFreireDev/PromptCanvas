@@ -316,7 +316,6 @@ button {
   position: fixed;
   inset: 0;
   background: var(--color-bg);
-  display: grid;
   place-items: center;
   padding: 1rem;
   z-index: 10010;
