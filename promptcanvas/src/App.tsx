@@ -15,17 +15,16 @@ const formatAiResponse = (response: unknown) => JSON.stringify(response, null, 2
 
 type AppProps = {
   aiService: AiService
-  apiKeyStorageKey?: string
 }
 
-function App({ aiService, apiKeyStorageKey = DEFAULT_API_KEY_STORAGE_KEY }: AppProps) {
+function App({ aiService }: AppProps) {
   const [values, setValues] = useState<FormValues>(() => createInitialValues())
   const [assembledPrompt, setAssembledPrompt] = useState('')
   const [aiResponse, setAiResponse] = useState('')
   const [isAiLoading, setIsAiLoading] = useState(false)
   const [isKeyDialogOpen, setIsKeyDialogOpen] = useState(false)
   const [aiApiKeyInput, setAiApiKeyInput] = useState(
-    () => localStorage.getItem(apiKeyStorageKey) ?? '',
+    () => localStorage.getItem(DEFAULT_API_KEY_STORAGE_KEY) ?? '',
   )
   const [keySavedNotice, setKeySavedNotice] = useState('')
 
@@ -42,7 +41,7 @@ function App({ aiService, apiKeyStorageKey = DEFAULT_API_KEY_STORAGE_KEY }: AppP
     const payload = assembledPrompt
     setAiResponse('')
 
-    const apiKey = localStorage.getItem(apiKeyStorageKey)?.trim() ?? ''
+    const apiKey = localStorage.getItem(DEFAULT_API_KEY_STORAGE_KEY)?.trim() ?? ''
     if (!apiKey) {
       setAiResponse(
         JSON.stringify(
@@ -128,7 +127,7 @@ function App({ aiService, apiKeyStorageKey = DEFAULT_API_KEY_STORAGE_KEY }: AppP
 
   const onSaveAIApiKey = (event: FormEvent) => {
     event.preventDefault()
-    localStorage.setItem(apiKeyStorageKey, aiApiKeyInput.trim())
+    localStorage.setItem(DEFAULT_API_KEY_STORAGE_KEY, aiApiKeyInput.trim())
     setKeySavedNotice(`${aiService.apiKeyLabel} saved locally.`)
   }
 
