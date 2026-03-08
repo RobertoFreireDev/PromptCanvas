@@ -9,8 +9,8 @@
 
 .canvas,
 .output {
-  background: #fffdf8;
-  border: 1px solid #d9e3d8;
+  background: var(--color-bg);
+  border: var(--border-default);
   border-radius: 14px;
   padding: 1rem;
 }
@@ -33,7 +33,7 @@ h2 {
 
 .subtitle {
   margin: 0 0 1rem;
-  color: #4e6252;
+  color: var(--color-fg);
 }
 
 .form {
@@ -55,26 +55,27 @@ h2 {
 
 label {
   font-weight: 600;
-  color: #31473a;
+  color: var(--color-fg);
 }
 
 textarea {
   width: 100%;
-  resize: vertical;
-  border: 1px solid #c5d4c5;
+  border: var(--border-default);
   border-radius: 10px;
-  padding: 0.7rem;
-  font: inherit;
-  background: #fff;
+  padding: 0.5rem;
+  margin: 0.2rem 0rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
 }
 
 input {
   width: 100%;
-  border: 1px solid #c5d4c5;
+  border: var(--border-default);
   border-radius: 10px;
   padding: 0.7rem;
   font: inherit;
-  background: #fff;
+  background: var(--color-bg);
+  color: var(--color-fg);
 }
 
 .listField {
@@ -90,7 +91,7 @@ input {
 }
 
 .listCount {
-  color: #4e6252;
+  color: var(--color-fg);
   font-size: 0.9rem;
   font-weight: 600;
 }
@@ -105,23 +106,19 @@ input {
 button {
   font: inherit;
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: var(--border-default);
   padding: 0.5rem 0.7rem;
   cursor: pointer;
+  background: var(--color-bg);
+  color: var(--color-fg);
 }
 
 .secondaryBtn {
   justify-self: start;
-  background: #eef6ef;
-  border-color: #b9cdbb;
-  color: #27402f;
 }
 
 .dangerBtn {
   justify-self: start;
-  background: #fff3f2;
-  border-color: #e8c0bd;
-  color: #7c312b;
 }
 
 .iconBtn {
@@ -139,9 +136,6 @@ button {
 
 .addItemBtn {
   justify-self: start;
-  background: #eef6ef;
-  border-color: #b9cdbb;
-  color: #27402f;
 }
 
 .collapseToggleBtn {
@@ -149,9 +143,6 @@ button {
 }
 
 .removeItemBtn {
-  background: #fff3f2;
-  border-color: #e8c0bd;
-  color: #7c312b;
 }
 
 .removeItemBtn:disabled {
@@ -160,9 +151,6 @@ button {
 }
 
 .submitBtn {
-  background: #276749;
-  color: #fff;
-  border-color: #1f593f;
   padding: 0.7rem 1rem;
 }
 
@@ -183,7 +171,8 @@ button {
   position: absolute;
   inset: 0;
   border-radius: 999px;
-  background: #c6d4c6;
+  background: var(--color-bg);
+  border: var(--border-default);
   transition: 0.2s;
 }
 
@@ -195,12 +184,12 @@ button {
   left: 4px;
   top: 4px;
   border-radius: 50%;
-  background: white;
+  background: var(--color-fg);
   transition: 0.2s;
 }
 
 .switch input:checked + .slider {
-  background: #2e7d5a;
+  background: var(--color-bg);
 }
 
 .switch input:checked + .slider::before {
@@ -212,11 +201,9 @@ button {
   min-height: 1000px;
   margin: 0;
   border-radius: 12px;
-  border: 1px solid #243a56;
-  background:
-    radial-gradient(circle at 0 0, rgba(76, 118, 168, 0.14), transparent 32%),
-    linear-gradient(180deg, #132338 0%, #0f1c2d 100%);
-  color: #e7eef9;
+  border: var(--border-default);
+  background: var(--color-bg);
+  color: var(--color-fg);
   padding: 0.95rem;
   overflow: auto;
   font-family: 'Consolas', 'SFMono-Regular', Menlo, Monaco, monospace;
@@ -263,7 +250,7 @@ button {
 .dialogOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(17, 28, 18, 0.35);
+  background: var(--color-bg);
   display: grid;
   place-items: center;
   padding: 1rem;
@@ -271,8 +258,8 @@ button {
 
 .dialogCard {
   width: min(560px, 100%);
-  background: #fffdf8;
-  border: 1px solid #d9e3d8;
+  background: var(--color-bg);
+  border: var(--border-default);
   border-radius: 14px;
   padding: 1rem;
 }
@@ -290,7 +277,7 @@ button {
 
 .savedNotice {
   margin: 0;
-  color: #1f593f;
+  color: var(--color-fg);
   font-weight: 600;
 }
 

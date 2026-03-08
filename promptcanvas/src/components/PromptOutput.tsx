@@ -48,7 +48,6 @@ function PromptOutput({ value }: PromptOutputProps) {
         </pre>
       ) : (
         <div className="jsonPlaceholder">
-          Your assembled Gemini API JSON payload will appear here after submitting the form.
         </div>
       )}
     </section>
