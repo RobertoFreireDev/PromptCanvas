@@ -4,6 +4,9 @@
   --color-bg: #122236;
   --color-fg: #b8f4a9;
   --color-border: #c5d4c5;
+  --color-scrollbar-track: var(--color-bg);
+  --color-scrollbar-thumb: var(--color-fg);
+  --color-scrollbar-thumb-hover: var(--color-border);
   --border-default: 1px solid var(--color-border);
 }
 
