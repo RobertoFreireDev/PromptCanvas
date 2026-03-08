@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { FieldConfig } from '../types/promptCanvas'
+import CollapseToggleButton from './CollapseToggleButton'
 import ListField from './ListField'
 import TextField from './TextField'
 import ToggleField from './ToggleField'
@@ -30,17 +31,13 @@ function FormField({
       {field.type === 'string' ? (
         <div className="fieldLabelRow">
           <label htmlFor={field.id}>{field.label}</label>
-          <button
-            type="button"
-            className="iconBtn secondaryBtn collapseToggleBtn"
-            onClick={() => setIsTextCollapsed((prev) => !prev)}
-            aria-expanded={!isTextCollapsed}
-            aria-controls={`${field.id}-text`}
-            aria-label={isTextCollapsed ? 'Expand text field' : 'Collapse text field'}
-            title={isTextCollapsed ? 'Expand text field' : 'Collapse text field'}
-          >
-            {isTextCollapsed ? '\u25BC' : '\u25B2'}
-          </button>
+          <CollapseToggleButton
+            collapsed={isTextCollapsed}
+            controlsId={`${field.id}-text`}
+            onToggle={() => setIsTextCollapsed((prev) => !prev)}
+            expandLabel="Expand text field"
+            collapseLabel="Collapse text field"
+          />
         </div>
       ) : (
         <label htmlFor={field.id}>{field.label}</label>

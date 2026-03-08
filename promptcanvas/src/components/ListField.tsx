@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import CollapseToggleButton from './CollapseToggleButton'
 import TextField from './TextField'
 
 type ListFieldProps = {
@@ -22,17 +23,13 @@ function ListField({
     <div className="listField">
       <div className="listFieldHeader">
         <span className="listCount">{items.length} item{items.length === 1 ? '' : 's'}</span>
-        <button
-          type="button"
-          className="iconBtn secondaryBtn collapseToggleBtn"
-          onClick={() => setIsCollapsed((prev) => !prev)}
-          aria-expanded={!isCollapsed}
-          aria-controls={`${fieldId}-items`}
-          aria-label={isCollapsed ? 'Expand list' : 'Collapse list'}
-          title={isCollapsed ? 'Expand list' : 'Collapse list'}
-        >
-          {isCollapsed ? '▼' : '▲'}
-        </button>
+        <CollapseToggleButton
+          collapsed={isCollapsed}
+          controlsId={`${fieldId}-items`}
+          onToggle={() => setIsCollapsed((prev) => !prev)}
+          expandLabel="Expand list"
+          collapseLabel="Collapse list"
+        />
       </div>
 
       {!isCollapsed ? (

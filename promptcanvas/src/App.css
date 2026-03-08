@@ -136,13 +136,16 @@ button {
 
 .addItemBtn {
   justify-self: start;
+  border: none;
 }
 
 .collapseToggleBtn {
   justify-self: auto;
+  border: none;
 }
 
 .removeItemBtn {
+  border: none;
 }
 
 .removeItemBtn:disabled {
