@@ -116,11 +116,18 @@ textarea::-webkit-scrollbar-corner {
 input {
   width: 100%;
   border: none;
-  border-radius: 10px;
   padding: 0.7rem;
   font: inherit;
   background: var(--color-bg);
   color: var(--color-fg);
+}
+
+input:hover,
+input:focus {  
+  border: var(--border-default);
+  border-radius: 1px;
+  border-color: var(--color-fg);
+  outline: none;
 }
 
 .listField {

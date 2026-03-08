@@ -5,43 +5,48 @@ import Button from './components/Button'
 import FormField from './components/FormField'
 import PromptOutput from './components/PromptOutput'
 import { createInitialValues, fields } from './constants/fields'
+import type { AiService } from './services/ai/types'
 import type { FormValues } from './types/promptCanvas'
 import { assemblePrompt } from './utils/promptAssembly'
 
-const GOOGLE_API_KEY_STORAGE_KEY = 'promptcanvas.googleApiKey'
-const GEMINI_MODEL = 'gemini-2.0-flash'
+const DEFAULT_API_KEY_STORAGE_KEY = 'promptcanvas.AIApiKey'
 
-const formatGeminiResponse = (response: unknown) => JSON.stringify(response, null, 2)
+const formatAiResponse = (response: unknown) => JSON.stringify(response, null, 2)
 
-function App() {
+type AppProps = {
+  aiService: AiService
+  apiKeyStorageKey?: string
+}
+
+function App({ aiService, apiKeyStorageKey = DEFAULT_API_KEY_STORAGE_KEY }: AppProps) {
   const [values, setValues] = useState<FormValues>(() => createInitialValues())
   const [assembledPrompt, setAssembledPrompt] = useState('')
-  const [geminiResponse, setGeminiResponse] = useState('')
-  const [isGeminiLoading, setIsGeminiLoading] = useState(false)
+  const [aiResponse, setAiResponse] = useState('')
+  const [isAiLoading, setIsAiLoading] = useState(false)
   const [isKeyDialogOpen, setIsKeyDialogOpen] = useState(false)
-  const [googleApiKeyInput, setGoogleApiKeyInput] = useState(
-    () => localStorage.getItem(GOOGLE_API_KEY_STORAGE_KEY) ?? '',
+  const [aiApiKeyInput, setAiApiKeyInput] = useState(
+    () => localStorage.getItem(apiKeyStorageKey) ?? '',
   )
   const [keySavedNotice, setKeySavedNotice] = useState('')
 
   const promptPreview = useMemo(() => assembledPrompt, [assembledPrompt])
 
-  const requestGemini = async () => {
+  const requestAi = async () => {
     if (!assembledPrompt.trim()) {
-      setGeminiResponse(
-        JSON.stringify({ error: 'Assemble a payload before sending the Gemini request.' }, null, 2),
+      setAiResponse(
+        JSON.stringify({ error: 'Assemble a payload before sending the AI request.' }, null, 2),
       )
       return
     }
 
     const payload = assembledPrompt
-    setGeminiResponse('')
+    setAiResponse('')
 
-    const apiKey = localStorage.getItem(GOOGLE_API_KEY_STORAGE_KEY)?.trim() ?? ''
+    const apiKey = localStorage.getItem(apiKeyStorageKey)?.trim() ?? ''
     if (!apiKey) {
-      setGeminiResponse(
+      setAiResponse(
         JSON.stringify(
-          { error: 'Missing Google API key. Open "Google API Key" and save a valid key first.' },
+          { error: `Missing API key. Open "${aiService.apiKeyLabel}" and save a valid key first.` },
           null,
           2,
         ),
@@ -49,42 +54,19 @@ function App() {
       return
     }
 
-    setIsGeminiLoading(true)
+    setIsAiLoading(true)
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: payload }] }],
-          }),
-        },
-      )
-
-      if (!response.ok) {
-        const errorPayload = await response.json().catch(() => ({}))
-        setGeminiResponse(
-          JSON.stringify(
-            {
-              error: 'Gemini API request failed.',
-              status: response.status,
-              details: errorPayload,
-            },
-            null,
-            2,
-          ),
-        )
+      const result = await aiService.sendPrompt(payload, apiKey)
+      if (!result.ok) {
+        setAiResponse(formatAiResponse(result.error))
         return
       }
-
-      const responsePayload = await response.json()
-      setGeminiResponse(formatGeminiResponse(responsePayload))
+      setAiResponse(formatAiResponse(result.data))
     } catch (error) {
-      setGeminiResponse(
+      setAiResponse(
         JSON.stringify(
           {
-            error: 'Unable to reach Gemini API.',
+            error: `Unexpected ${aiService.providerName} integration error.`,
             details: error instanceof Error ? error.message : 'Unknown error',
           },
           null,
@@ -92,14 +74,14 @@ function App() {
         ),
       )
     } finally {
-      setIsGeminiLoading(false)
+      setIsAiLoading(false)
     }
   }
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     setAssembledPrompt(assemblePrompt(values))
-    setGeminiResponse('')
+    setAiResponse('')
   }
 
   const updateStringField = (fieldId: string, nextValue: string) => {
@@ -137,7 +119,6 @@ function App() {
   const openKeyDialog = () => {
     setIsKeyDialogOpen(true)
     setKeySavedNotice('')
-    setGoogleApiKeyInput(localStorage.getItem(GOOGLE_API_KEY_STORAGE_KEY) ?? '')
   }
 
   const closeKeyDialog = () => {
@@ -145,10 +126,10 @@ function App() {
     setKeySavedNotice('')
   }
 
-  const onSaveGoogleApiKey = (event: FormEvent) => {
+  const onSaveAIApiKey = (event: FormEvent) => {
     event.preventDefault()
-    localStorage.setItem(GOOGLE_API_KEY_STORAGE_KEY, googleApiKeyInput.trim())
-    setKeySavedNotice('Google API key saved locally.')
+    localStorage.setItem(apiKeyStorageKey, aiApiKeyInput.trim())
+    setKeySavedNotice(`${aiService.apiKeyLabel} saved locally.`)
   }
 
   return (
@@ -157,10 +138,10 @@ function App() {
         <div className="canvasHeader">
           <h1>PromptCanvas</h1>
           <Button type="button" variant="secondary" className="apiKeyBtn" onClick={openKeyDialog}>
-            Google API Key
+            {aiService.apiKeyLabel}
           </Button>
         </div>
-        <p className="subtitle">Build a structured Gemini prompt using guided sections.</p>
+        <p className="subtitle">Build a structured {aiService.providerName} prompt using guided sections.</p>
 
         <form className="form" onSubmit={onSubmit}>
           {fields.map((field) => (
@@ -184,9 +165,10 @@ function App() {
 
       <PromptOutput
         value={promptPreview}
-        responseValue={geminiResponse}
-        isLoadingResponse={isGeminiLoading}
-        onRequest={requestGemini}
+        responseValue={aiResponse}
+        isLoadingResponse={isAiLoading}
+        providerName={aiService.providerName}
+        onRequest={requestAi}
       />
 
       {isKeyDialogOpen && (
@@ -195,18 +177,18 @@ function App() {
             className="dialogCard"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="google-api-key-title"
+            aria-labelledby="ai-api-key-title"
             onClick={(event) => event.stopPropagation()}
           >
-            <h2 id="google-api-key-title">Google API Key</h2>
+            <h2 id="ai-api-key-title">{aiService.apiKeyLabel}</h2>
             <p className="subtitle">Paste your key below to store it in local browser storage.</p>
-            <form className="dialogForm" onSubmit={onSaveGoogleApiKey}>
-              <label htmlFor="google-api-key-input">API key</label>
+            <form className="dialogForm" onSubmit={onSaveAIApiKey}>
+              <label htmlFor="ai-api-key-input">API key</label>
               <input
-                id="google-api-key-input"
+                id="ai-api-key-input"
                 type="password"
-                value={googleApiKeyInput}
-                onChange={(event) => setGoogleApiKeyInput(event.target.value)}
+                value={aiApiKeyInput}
+                onChange={(event) => setAiApiKeyInput(event.target.value)}
                 autoComplete="off"
                 placeholder="AIza..."
               />

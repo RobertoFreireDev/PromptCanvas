@@ -1,6 +1,6 @@
 ---
 description: Guidelines for building PromptCanvas --- a clean, cozy, and
-  friendly React interface that helps users structure prompts for Gemini
+  friendly React interface that helps users structure prompts for AI
   using an interactive form canvas.
 name: prompt-canvas
 ---
@@ -8,7 +8,7 @@ name: prompt-canvas
 # PromptCanvas Skill
 
 PromptCanvas is a clean, cozy, and friendly prompt builder UI that helps
-users construct structured prompts for Gemini using an intuitive
+users construct structured prompts for AI using an intuitive
 form-based canvas.
 
 The goal is to remove friction from prompt engineering by transforming a

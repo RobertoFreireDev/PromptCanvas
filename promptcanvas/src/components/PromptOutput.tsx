@@ -4,6 +4,7 @@ type PromptOutputProps = {
   value: string
   responseValue: string
   isLoadingResponse: boolean
+  providerName: string
   onRequest: () => void
 }
 
@@ -41,15 +42,15 @@ const highlightJson = (input: string) => {
   )
 }
 
-function PromptOutput({ value, responseValue, isLoadingResponse, onRequest }: PromptOutputProps) {
+function PromptOutput({ value, responseValue, isLoadingResponse, providerName, onRequest }: PromptOutputProps) {
   const rendered = highlightJson(value)
   const renderedResponse = highlightJson(responseValue)
 
   return (
     <section className="output">
-      <h2>Gemini API payload</h2>
+      <h2>{providerName} API payload</h2>
       {value ? (
-        <pre className="jsonViewer" aria-label="Assembled Gemini API JSON payload">
+        <pre className="jsonViewer" aria-label={`Assembled ${providerName} API JSON payload`}>
           <code dangerouslySetInnerHTML={{ __html: rendered }} />
         </pre>
       ) : (
@@ -63,13 +64,13 @@ function PromptOutput({ value, responseValue, isLoadingResponse, onRequest }: Pr
       >
         {isLoadingResponse ? 'Requesting...' : 'Send Request'}
       </Button>
-      <h2>Gemini API response</h2>
+      <h2>{providerName} API response</h2>
       {isLoadingResponse ? (
-        <pre className="jsonViewer" aria-label="Gemini API response loading">
+        <pre className="jsonViewer" aria-label={`${providerName} API response loading`}>
           <code>{'{\n  "status": "Loading response..."\n}'}</code>
         </pre>
       ) : responseValue ? (
-        <pre className="jsonViewer" aria-label="Gemini API JSON response">
+        <pre className="jsonViewer" aria-label={`${providerName} API JSON response`}>
           <code dangerouslySetInnerHTML={{ __html: renderedResponse }} />
         </pre>
       ) : (
