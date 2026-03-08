@@ -20,6 +20,17 @@ h2 {
   margin: 0 0 0.5rem;
 }
 
+.canvasHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.apiKeyBtn {
+  white-space: nowrap;
+}
+
 .subtitle {
   margin: 0 0 1rem;
   color: #4e6252;
@@ -43,6 +54,15 @@ label {
 textarea {
   width: 100%;
   resize: vertical;
+  border: 1px solid #c5d4c5;
+  border-radius: 10px;
+  padding: 0.7rem;
+  font: inherit;
+  background: #fff;
+}
+
+input {
+  width: 100%;
   border: 1px solid #c5d4c5;
   border-radius: 10px;
   padding: 0.7rem;
@@ -167,8 +187,46 @@ button {
   min-height: 360px;
 }
 
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 28, 18, 0.35);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.dialogCard {
+  width: min(560px, 100%);
+  background: #fffdf8;
+  border: 1px solid #d9e3d8;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.dialogForm {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.dialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.savedNotice {
+  margin: 0;
+  color: #1f593f;
+  font-weight: 600;
+}
+
 @media (max-width: 900px) {
   .page {
     grid-template-columns: 1fr;
+  }
+
+  .canvasHeader {
+    flex-wrap: wrap;
   }
 }

@@ -7,9 +7,16 @@ import { createInitialValues, fields } from './constants/fields'
 import type { FormValues } from './types/promptCanvas'
 import { assemblePrompt } from './utils/promptAssembly'
 
+const GOOGLE_API_KEY_STORAGE_KEY = 'promptcanvas.googleApiKey'
+
 function App() {
   const [values, setValues] = useState<FormValues>(() => createInitialValues())
   const [assembledPrompt, setAssembledPrompt] = useState('')
+  const [isKeyDialogOpen, setIsKeyDialogOpen] = useState(false)
+  const [googleApiKeyInput, setGoogleApiKeyInput] = useState(
+    () => localStorage.getItem(GOOGLE_API_KEY_STORAGE_KEY) ?? '',
+  )
+  const [keySavedNotice, setKeySavedNotice] = useState('')
 
   const promptPreview = useMemo(() => assembledPrompt, [assembledPrompt])
 
@@ -50,10 +57,32 @@ function App() {
     })
   }
 
+  const openKeyDialog = () => {
+    setIsKeyDialogOpen(true)
+    setKeySavedNotice('')
+    setGoogleApiKeyInput(localStorage.getItem(GOOGLE_API_KEY_STORAGE_KEY) ?? '')
+  }
+
+  const closeKeyDialog = () => {
+    setIsKeyDialogOpen(false)
+    setKeySavedNotice('')
+  }
+
+  const onSaveGoogleApiKey = (event: FormEvent) => {
+    event.preventDefault()
+    localStorage.setItem(GOOGLE_API_KEY_STORAGE_KEY, googleApiKeyInput.trim())
+    setKeySavedNotice('Google API key saved locally.')
+  }
+
   return (
     <main className="page">
       <section className="canvas">
-        <h1>PromptCanvas</h1>
+        <div className="canvasHeader">
+          <h1>PromptCanvas</h1>
+          <button type="button" className="secondaryBtn apiKeyBtn" onClick={openKeyDialog}>
+            Google API Key
+          </button>
+        </div>
         <p className="subtitle">Build a structured Gemini prompt using guided sections.</p>
 
         <form className="form" onSubmit={onSubmit}>
@@ -77,6 +106,41 @@ function App() {
       </section>
 
       <PromptOutput value={promptPreview} />
+
+      {isKeyDialogOpen && (
+        <div className="dialogOverlay" role="presentation" onClick={closeKeyDialog}>
+          <section
+            className="dialogCard"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="google-api-key-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h2 id="google-api-key-title">Google API Key</h2>
+            <p className="subtitle">Paste your key below to store it in local browser storage.</p>
+            <form className="dialogForm" onSubmit={onSaveGoogleApiKey}>
+              <label htmlFor="google-api-key-input">API key</label>
+              <input
+                id="google-api-key-input"
+                type="password"
+                value={googleApiKeyInput}
+                onChange={(event) => setGoogleApiKeyInput(event.target.value)}
+                autoComplete="off"
+                placeholder="AIza..."
+              />
+              <div className="dialogActions">
+                <button type="submit" className="submitBtn">
+                  Save
+                </button>
+                <button type="button" className="secondaryBtn" onClick={closeKeyDialog}>
+                  Close
+                </button>
+              </div>
+              {keySavedNotice && <p className="savedNotice">{keySavedNotice}</p>}
+            </form>
+          </section>
+        </div>
+      )}
     </main>
   )
 }
