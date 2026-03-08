@@ -2,16 +2,55 @@ type PromptOutputProps = {
   value: string
 }
 
+const escapeHtml = (text: string) =>
+  text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+
+const highlightJson = (input: string) => {
+  if (!input.trim()) return ''
+
+  let formatted = input
+  try {
+    formatted = JSON.stringify(JSON.parse(input), null, 2)
+  } catch {
+    return `<span class="jsonToken jsonString">${escapeHtml(input)}</span>`
+  }
+
+  const escaped = escapeHtml(formatted)
+  return escaped.replace(
+    /("(\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    (match) => {
+      if (match.startsWith('"') && match.endsWith(':')) {
+        return `<span class="jsonToken jsonKey">${match}</span>`
+      }
+      if (match.startsWith('"')) {
+        return `<span class="jsonToken jsonString">${match}</span>`
+      }
+      if (match === 'true' || match === 'false') {
+        return `<span class="jsonToken jsonBoolean">${match}</span>`
+      }
+      if (match === 'null') {
+        return `<span class="jsonToken jsonNull">${match}</span>`
+      }
+      return `<span class="jsonToken jsonNumber">${match}</span>`
+    },
+  )
+}
+
 function PromptOutput({ value }: PromptOutputProps) {
+  const rendered = highlightJson(value)
+
   return (
     <section className="output">
-      <h2>Structured prompt output</h2>
-      <textarea
-        readOnly
-        value={value}
-        placeholder="Your assembled prompt will appear here after submitting the form."
-        rows={16}
-      />
+      <h2>Gemini API payload</h2>
+      {value ? (
+        <pre className="jsonViewer" aria-label="Assembled Gemini API JSON payload">
+          <code dangerouslySetInnerHTML={{ __html: rendered }} />
+        </pre>
+      ) : (
+        <div className="jsonPlaceholder">
+          Your assembled Gemini API JSON payload will appear here after submitting the form.
+        </div>
+      )}
     </section>
   )
 }

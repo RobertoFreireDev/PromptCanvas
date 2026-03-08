@@ -7,18 +7,18 @@ const formatList = (items: string[]) => {
 }
 
 export const assemblePrompt = (values: FormValues) => {
-  const lines = [
-    `- Task Context: ${values.taskContext as string}`,
-    `- Tone: ${values.tone as string}`,
-    `- Background Data: ${formatList(values.backgroundData as string[])}`,
-    `- Rules: ${formatList(values.rules as string[])}`,
-    `- Examples: ${formatList(values.examples as string[])}`,
-    `- Conversation History: ${(values.conversationHistory as boolean) ? 'Included' : 'Not included'}`,
-    `- Immediate Task: ${values.task as string}`,
-    `- Reasoning Guidance: ${formatList(values.reasoning as string[])}`,
-    `- Output Format: ${values.outputFormat as string}`,
-    `- Prefilled Response: ${values.prefilledResponse as string}`,
-  ]
+  const payload = {
+    'Task Context': values.taskContext as string,
+    Tone: values.tone as string,
+    'Background Data': formatList(values.backgroundData as string[]),
+    Rules: formatList(values.rules as string[]),
+    Examples: formatList(values.examples as string[]),
+    'Conversation History': (values.conversationHistory as boolean) ? 'Included' : 'Not included',
+    'Immediate Task': values.task as string,
+    'Reasoning Guidance': formatList(values.reasoning as string[]),
+    'Output Format': values.outputFormat as string,
+    'Prefilled Response': values.prefilledResponse as string,
+  }
 
-  return lines.join('\n')
+  return JSON.stringify(payload, null, 2)
 }
