@@ -57,7 +57,9 @@ textarea {
 
 .listRow {
   display: grid;
-  gap: 0.45rem;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 0.35rem;
 }
 
 button {
@@ -80,6 +82,37 @@ button {
   background: #fff3f2;
   border-color: #e8c0bd;
   color: #7c312b;
+}
+
+.iconBtn {
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.addItemBtn {
+  justify-self: start;
+  background: #eef6ef;
+  border-color: #b9cdbb;
+  color: #27402f;
+}
+
+.removeItemBtn {
+  background: #fff3f2;
+  border-color: #e8c0bd;
+  color: #7c312b;
+}
+
+.removeItemBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .submitBtn {

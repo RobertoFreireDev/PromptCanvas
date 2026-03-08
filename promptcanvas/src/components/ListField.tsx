@@ -27,17 +27,25 @@ function ListField({
           />
           <button
             type="button"
-            className="dangerBtn"
+            className="iconBtn removeItemBtn"
             onClick={() => onRemoveItem(index)}
             disabled={items.length === 1}
+            aria-label={`Remove item ${index + 1}`}
+            title="Remove item"
           >
-            Remove
+            x
           </button>
         </div>
       ))}
 
-      <button type="button" className="secondaryBtn" onClick={onAddItem}>
-        Add item
+      <button
+        type="button"
+        className="iconBtn addItemBtn"
+        onClick={onAddItem}
+        aria-label="Add item"
+        title="Add item"
+      >
+        +
       </button>
     </div>
   )
