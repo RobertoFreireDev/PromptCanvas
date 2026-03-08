@@ -10,7 +10,7 @@
 .canvas,
 .output {
   background: var(--color-bg);
-  border: var(--border-default);
+  border: none;
   border-radius: 14px;
   padding: 1rem;
 }
@@ -60,7 +60,7 @@ label {
 
 textarea {
   width: 100%;
-  border: var(--border-default);
+  border: none;
   border-radius: 10px;
   padding: 0.5rem;
   margin: 0.2rem 0rem;
@@ -95,7 +95,7 @@ textarea::-webkit-scrollbar-track {
 textarea::-webkit-scrollbar-thumb {
   background: var(--color-scrollbar-thumb);
   border-radius: 10px;
-  border: 2px solid var(--color-scrollbar-track);
+  border: none;
 }
 
 textarea::-webkit-scrollbar-thumb:hover {
@@ -108,7 +108,7 @@ textarea::-webkit-scrollbar-corner {
 
 input {
   width: 100%;
-  border: var(--border-default);
+  border: none;
   border-radius: 10px;
   padding: 0.7rem;
   font: inherit;
@@ -144,7 +144,7 @@ input {
 button {
   font: inherit;
   border-radius: 8px;
-  border: var(--border-default);
+  border: none;
   padding: 0.5rem 0.7rem;
   cursor: pointer;
   background: var(--color-bg);
@@ -218,7 +218,7 @@ button {
   inset: 0;
   border-radius: 999px;
   background: var(--color-bg);
-  border: var(--border-default);
+  border: none;
   transition: 0.2s;
 }
 
@@ -247,7 +247,7 @@ button {
   min-height: 1000px;
   margin: 0;
   border-radius: 12px;
-  border: var(--border-default);
+  border: none;
   background: var(--color-bg);
   color: var(--color-fg);
   padding: 0.95rem;
@@ -305,7 +305,7 @@ button {
 .dialogCard {
   width: min(560px, 100%);
   background: var(--color-bg);
-  border: var(--border-default);
+  border: none;
   border-radius: 14px;
   padding: 1rem;
 }
