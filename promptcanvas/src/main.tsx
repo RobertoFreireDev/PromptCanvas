@@ -2,9 +2,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { ChatGptAiService } from './services/ai/ChatGptAiService.ts'
+import { GeminiAiService } from './services/ai/GeminiAiService.ts'
 
-const aiService = new ChatGptAiService()
+const aiService = new GeminiAiService()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
