@@ -8,10 +8,15 @@ import type { FormValues } from './types/promptCanvas'
 import { assemblePrompt } from './utils/promptAssembly'
 
 const GOOGLE_API_KEY_STORAGE_KEY = 'promptcanvas.googleApiKey'
+const GEMINI_MODEL = 'gemini-2.0-flash'
+
+const formatGeminiResponse = (response: unknown) => JSON.stringify(response, null, 2)
 
 function App() {
   const [values, setValues] = useState<FormValues>(() => createInitialValues())
   const [assembledPrompt, setAssembledPrompt] = useState('')
+  const [geminiResponse, setGeminiResponse] = useState('')
+  const [isGeminiLoading, setIsGeminiLoading] = useState(false)
   const [isKeyDialogOpen, setIsKeyDialogOpen] = useState(false)
   const [googleApiKeyInput, setGoogleApiKeyInput] = useState(
     () => localStorage.getItem(GOOGLE_API_KEY_STORAGE_KEY) ?? '',
@@ -20,9 +25,80 @@ function App() {
 
   const promptPreview = useMemo(() => assembledPrompt, [assembledPrompt])
 
+  const requestGemini = async () => {
+    if (!assembledPrompt.trim()) {
+      setGeminiResponse(
+        JSON.stringify({ error: 'Assemble a payload before sending the Gemini request.' }, null, 2),
+      )
+      return
+    }
+
+    const payload = assembledPrompt
+    setGeminiResponse('')
+
+    const apiKey = localStorage.getItem(GOOGLE_API_KEY_STORAGE_KEY)?.trim() ?? ''
+    if (!apiKey) {
+      setGeminiResponse(
+        JSON.stringify(
+          { error: 'Missing Google API key. Open "Google API Key" and save a valid key first.' },
+          null,
+          2,
+        ),
+      )
+      return
+    }
+
+    setIsGeminiLoading(true)
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: payload }] }],
+          }),
+        },
+      )
+
+      if (!response.ok) {
+        const errorPayload = await response.json().catch(() => ({}))
+        setGeminiResponse(
+          JSON.stringify(
+            {
+              error: 'Gemini API request failed.',
+              status: response.status,
+              details: errorPayload,
+            },
+            null,
+            2,
+          ),
+        )
+        return
+      }
+
+      const responsePayload = await response.json()
+      setGeminiResponse(formatGeminiResponse(responsePayload))
+    } catch (error) {
+      setGeminiResponse(
+        JSON.stringify(
+          {
+            error: 'Unable to reach Gemini API.',
+            details: error instanceof Error ? error.message : 'Unknown error',
+          },
+          null,
+          2,
+        ),
+      )
+    } finally {
+      setIsGeminiLoading(false)
+    }
+  }
+
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     setAssembledPrompt(assemblePrompt(values))
+    setGeminiResponse('')
   }
 
   const updateStringField = (fieldId: string, nextValue: string) => {
@@ -105,7 +181,12 @@ function App() {
         </form>
       </section>
 
-      <PromptOutput value={promptPreview} />
+      <PromptOutput
+        value={promptPreview}
+        responseValue={geminiResponse}
+        isLoadingResponse={isGeminiLoading}
+        onRequest={requestGemini}
+      />
 
       {isKeyDialogOpen && (
         <div className="dialogOverlay" role="presentation" onClick={closeKeyDialog}>
