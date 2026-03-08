@@ -39,7 +39,7 @@ const fields = [
   { id: "taskContext", label: "Task context", type: "string" },
   { id: "tone", label: "Tone context", type: "string" },
   { id: "backgroundData", label: "Background data", type: "string[]" },
-  { id: "rules", label: "Detailed task description & rules", type: "string[]" },
+  { id: "rules", label: "Detailed task description and rules", type: "string[]" },
   { id: "examples", label: "Examples", type: "string[]" },
   { id: "conversationHistory", label: "Include conversation history", type: "boolean" },
   { id: "task", label: "Immediate task", type: "string" },

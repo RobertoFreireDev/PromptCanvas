@@ -8,7 +8,7 @@ export const fields: FieldConfig[] = [
     label: 'Background data, documents, and images',
     type: 'string[]',
   },
-  { id: 'rules', label: 'Detailed task description & rules', type: 'string[]' },
+  { id: 'rules', label: 'Detailed task description and rules', type: 'string[]' },
   { id: 'examples', label: 'Examples', type: 'string[]' },
   {
     id: 'conversationHistory',

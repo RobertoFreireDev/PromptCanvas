@@ -17,7 +17,7 @@ Background data, documents, and images (string[])
 - Microtasks always run before the next macrotask.
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop
 
-Detailed task description & rules (string[])
+Detailed task description and rules (string[])
 - Explain the JavaScript event loop in simple terms.
 - Explain Call Stack, Microtasks, and Macrotasks.
 - Use a small code example to demonstrate execution order.
@@ -37,7 +37,7 @@ true
 Immediate task: describe the task or request (string)
 Write a beginner-friendly blog post explaining the JavaScript Event Loop and how microtasks and macrotasks work.
 
-Thinking step by step & reflections (string[])
+Thinking step by step and reflections (string[])
 - First explain why JavaScript needs the event loop.
 - Then describe the Call Stack.
 - Then explain the Microtask Queue.

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { FieldConfig } from '../types/promptCanvas'
 import ListField from './ListField'
 import TextField from './TextField'
@@ -22,16 +23,39 @@ function FormField({
   onListItemAdd,
   onListItemRemove,
 }: FormFieldProps) {
+  const [isTextCollapsed, setIsTextCollapsed] = useState(true)
+
   return (
     <div className="field">
-      <label htmlFor={field.id}>{field.label}</label>
+      {field.type === 'string' ? (
+        <div className="fieldLabelRow">
+          <label htmlFor={field.id}>{field.label}</label>
+          <button
+            type="button"
+            className="iconBtn secondaryBtn collapseToggleBtn"
+            onClick={() => setIsTextCollapsed((prev) => !prev)}
+            aria-expanded={!isTextCollapsed}
+            aria-controls={`${field.id}-text`}
+            aria-label={isTextCollapsed ? 'Expand text field' : 'Collapse text field'}
+            title={isTextCollapsed ? 'Expand text field' : 'Collapse text field'}
+          >
+            {isTextCollapsed ? '\u25BC' : '\u25B2'}
+          </button>
+        </div>
+      ) : (
+        <label htmlFor={field.id}>{field.label}</label>
+      )}
 
       {field.type === 'string' ? (
-        <TextField
-          id={field.id}
-          value={value as string}
-          onChange={(nextValue) => onStringChange(field.id, nextValue)}
-        />
+        !isTextCollapsed ? (
+          <div id={`${field.id}-text`}>
+            <TextField
+              id={field.id}
+              value={value as string}
+              onChange={(nextValue) => onStringChange(field.id, nextValue)}
+            />
+          </div>
+        ) : null
       ) : null}
 
       {field.type === 'string[]' ? (
