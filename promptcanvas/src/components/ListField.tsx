@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import TextField from './TextField'
 
 type ListFieldProps = {
@@ -15,38 +16,59 @@ function ListField({
   onAddItem,
   onRemoveItem,
 }: ListFieldProps) {
+  const [isCollapsed, setIsCollapsed] = useState(true)
+
   return (
     <div className="listField">
-      {items.map((item, index) => (
-        <div key={`${fieldId}-${index}`} className="listRow">
-          <TextField
-            id={`${fieldId}-${index}`}
-            value={item}
-            rows={2}
-            onChange={(nextValue) => onItemChange(index, nextValue)}
-          />
+      <div className="listFieldHeader">
+        <span className="listCount">{items.length} item{items.length === 1 ? '' : 's'}</span>
+        <button
+          type="button"
+          className="iconBtn secondaryBtn collapseToggleBtn"
+          onClick={() => setIsCollapsed((prev) => !prev)}
+          aria-expanded={!isCollapsed}
+          aria-controls={`${fieldId}-items`}
+          aria-label={isCollapsed ? 'Expand list' : 'Collapse list'}
+          title={isCollapsed ? 'Expand list' : 'Collapse list'}
+        >
+          {isCollapsed ? '▼' : '▲'}
+        </button>
+      </div>
+
+      {!isCollapsed ? (
+        <div id={`${fieldId}-items`}>
+          {items.map((item, index) => (
+            <div key={`${fieldId}-${index}`} className="listRow">
+              <TextField
+                id={`${fieldId}-${index}`}
+                value={item}
+                rows={2}
+                onChange={(nextValue) => onItemChange(index, nextValue)}
+              />
+              <button
+                type="button"
+                className="iconBtn removeItemBtn"
+                onClick={() => onRemoveItem(index)}
+                disabled={items.length === 1}
+                aria-label={`Remove item ${index + 1}`}
+                title="Remove item"
+              >
+                x
+              </button>
+            </div>
+          ))}
+
           <button
             type="button"
-            className="iconBtn removeItemBtn"
-            onClick={() => onRemoveItem(index)}
-            disabled={items.length === 1}
-            aria-label={`Remove item ${index + 1}`}
-            title="Remove item"
+            className="iconBtn addItemBtn"
+            onClick={onAddItem}
+            aria-label="Add item"
+            title="Add item"
           >
-            x
+            +
           </button>
         </div>
-      ))}
-
-      <button
-        type="button"
-        className="iconBtn addItemBtn"
-        onClick={onAddItem}
-        aria-label="Add item"
-        title="Add item"
-      >
-        +
-      </button>
+      ) : null}
     </div>
   )
 }

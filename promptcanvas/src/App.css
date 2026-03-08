@@ -75,6 +75,19 @@ input {
   gap: 0.6rem;
 }
 
+.listFieldHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.listCount {
+  color: #4e6252;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 .listRow {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -122,6 +135,10 @@ button {
   background: #eef6ef;
   border-color: #b9cdbb;
   color: #27402f;
+}
+
+.collapseToggleBtn {
+  justify-self: auto;
 }
 
 .removeItemBtn {
