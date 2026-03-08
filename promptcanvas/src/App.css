@@ -1,0 +1,156 @@
+:root {
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  line-height: 1.4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #f3efe7, #e9f5ee);
+  color: #243429;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1rem;
+}
+
+.canvas,
+.output {
+  background: #fffdf8;
+  border: 1px solid #d9e3d8;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+h1,
+h2 {
+  margin: 0 0 0.5rem;
+}
+
+.subtitle {
+  margin: 0 0 1rem;
+  color: #4e6252;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+label {
+  font-weight: 600;
+  color: #31473a;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #c5d4c5;
+  border-radius: 10px;
+  padding: 0.7rem;
+  font: inherit;
+  background: #fff;
+}
+
+.listField {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.listRow {
+  display: grid;
+  gap: 0.45rem;
+}
+
+button {
+  font: inherit;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+}
+
+.secondaryBtn {
+  justify-self: start;
+  background: #eef6ef;
+  border-color: #b9cdbb;
+  color: #27402f;
+}
+
+.dangerBtn {
+  justify-self: start;
+  background: #fff3f2;
+  border-color: #e8c0bd;
+  color: #7c312b;
+}
+
+.submitBtn {
+  background: #276749;
+  color: #fff;
+  border-color: #1f593f;
+  padding: 0.7rem 1rem;
+}
+
+.switch {
+  position: relative;
+  width: 52px;
+  height: 30px;
+  display: inline-block;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #c6d4c6;
+  transition: 0.2s;
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: 4px;
+  top: 4px;
+  border-radius: 50%;
+  background: white;
+  transition: 0.2s;
+}
+
+.switch input:checked + .slider {
+  background: #2e7d5a;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(22px);
+}
+
+.output textarea {
+  min-height: 360px;
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+}
