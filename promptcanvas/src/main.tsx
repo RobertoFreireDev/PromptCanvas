@@ -2,9 +2,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { GeminiAiService } from './services/ai/GeminiAiService.ts'
+import { OpenRouterAiService } from './services/ai/OpenRouterAiService.ts'
 
-const aiService = new GeminiAiService()
+const aiService = new OpenRouterAiService()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

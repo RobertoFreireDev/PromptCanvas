@@ -131,6 +131,17 @@ function App({ aiService }: AppProps) {
     setKeySavedNotice(`${aiService.apiKeyLabel} saved locally.`)
   }
 
+  const apiKeyPlaceholder = (() => {
+    switch (aiService.providerName) {
+      case 'Gemini':
+        return 'AIza...'
+      case 'OpenRouter':
+        return 'sk-or-v1-...'
+      default:
+        return 'sk-...'
+    }
+  })()
+
   return (
     <main className="page">
       <section className="canvas">
@@ -189,7 +200,7 @@ function App({ aiService }: AppProps) {
                 value={aiApiKeyInput}
                 onChange={(event) => setAiApiKeyInput(event.target.value)}
                 autoComplete="off"
-                placeholder="AIza..."
+                placeholder={apiKeyPlaceholder}
               />
               <div className="dialogActions">
                 <Button type="submit">
